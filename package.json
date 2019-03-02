@@ -7,6 +7,16 @@
   "author": "Luciano Nooijen <luciano@bytecode.nl>",
   "license": "AGPL-3.0-only",
   "private": false,
+  "keywords": [
+    "pingpong",
+    "ping",
+    "pong",
+    "api",
+    "scores"
+  ],
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "dependencies": {
     "ts-node": "^8.0.2",
     "typescript": "^3.3.3333",
