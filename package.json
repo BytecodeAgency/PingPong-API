@@ -17,6 +17,17 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "scripts": {
+    "dev": "nodemon",
+    "start": "ts-node server/server.ts",
+    "build": "yarn run clean && tsc",
+    "lint": "tslint --project .",
+    "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watch",
+    "coverage": "NODE_ENV=test jest --coverage",
+    "reinstall": "rm -rf node_modules && yarn",
+    "clean": "rm -rf dist build coverage"
+  },
   "dependencies": {
     "ts-node": "^8.0.2",
     "typescript": "^3.3.3333",
