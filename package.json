@@ -21,9 +21,9 @@
     "dev": "nodemon",
     "start": "ts-node server/server.ts",
     "build": "yarn run clean && tsc",
-    "lint": "yarn run lint:ts; yarn run lint:prettier",
+    "lint": "yarn run clean & yarn run lint:ts & yarn run lint:prettier",
     "lint:ts": "tslint --project .",
-    "lint:prettier": "prettier --check '**/*.ts'",
+    "lint:prettier": "prettier '**/*.ts'",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "coverage": "NODE_ENV=test jest --coverage",
@@ -41,7 +41,9 @@
     "yarn": "^1.13.0"
   },
   "devDependencies": {
+    "@types/helmet": "^0.0.42",
     "@types/jest": "^24.0.9",
+    "@types/morgan": "^1.7.35",
     "@types/node": "^11.10.4",
     "jest": "^24.1.0",
     "nodemon": "^1.18.10",
