@@ -6,5 +6,18 @@
   "repository": "https://github.com/BytecodeOpenSource/PingPong-API",
   "author": "Luciano Nooijen <luciano@bytecode.nl>",
   "license": "AGPL-3.0-only",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.3333",
+    "yarn": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.10.4",
+    "jest": "^24.1.0",
+    "nodemon": "^1.18.10",
+    "ts-jest": "^24.0.0",
+    "tslint-config-airbnb": "^5.11.1"
+  }
 }
