@@ -1,9 +1,7 @@
 {
   "extends": [
-    "tslint-config-airbnb"
-  ],
-  "rulesDirectory": [
-    "node_modules/tslint-eslint-rules/dist/rules"
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
   ],
   "rules": {
     "arrow-parens": false,
@@ -13,6 +11,7 @@
     "no-invalid-this": true,
     "indent": [true, "spaces", 4],
     "prefer-object-spread": true,
+    "semicolon": [true, "always"],
     "ter-arrow-parens": [false, "as-needed"],
     "ter-indent": [true, 4],
     "triple-equals": true
