@@ -21,7 +21,9 @@
     "dev": "nodemon",
     "start": "ts-node server/server.ts",
     "build": "yarn run clean && tsc",
-    "lint": "tslint --project .",
+    "lint": "yarn run lint:ts; yarn run lint:prettier",
+    "lint:ts": "tslint --project .",
+    "lint:prettier": "prettier .",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "coverage": "NODE_ENV=test jest --coverage",
@@ -29,6 +31,8 @@
     "clean": "rm -rf dist build coverage"
   },
   "dependencies": {
+    "@types/express": "^4.16.1",
+    "express": "^4.16.4",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.3333",
     "yarn": "^1.13.0"
@@ -41,6 +45,7 @@
     "prettier": "^1.16.4",
     "prettierrc": "^0.0.0-5",
     "ts-jest": "^24.0.0",
+    "tslint": "^5.13.1",
     "tslint-config-airbnb": "^5.11.1"
   }
 }
