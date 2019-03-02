@@ -1,0 +1,6 @@
+{
+  "watch": ["controllers", "models", "database", "helpers", "server", "routes"],
+  "ext": "ts",
+  "ignore": ["tests"],
+  "exec": "ts-node server/server.ts"
+}
