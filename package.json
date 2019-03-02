@@ -1,0 +1,10 @@
+{
+  "name": "pingpong-api",
+  "version": "0.0.1",
+  "description": "Ping Pong app API developed by Bytecode",
+  "main": "index.js",
+  "repository": "https://github.com/BytecodeOpenSource/PingPong-API",
+  "author": "Luciano Nooijen <luciano@bytecode.nl>",
+  "license": "AGPL-3.0-only",
+  "private": false
+}
