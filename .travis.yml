@@ -1,0 +1,38 @@
+language: node_js
+
+# services:
+#   - postgresql
+
+node_js:
+  - "lts/*"
+  - "10"
+  - "8"
+
+notifications:
+  email:
+    receipients:
+      - pingpong@bytecode.nl
+
+# before_install:
+#   - cp .env.example .env
+
+install:
+  - yarn
+  - yarn global add codecov
+
+# before_script:
+#   - psql -c "CREATE USER root WITH PASSWORD 'root';" -U postgres
+#   - psql -c 'CREATE DATABASE blog_test;' -U postgres
+#   - psql -c 'GRANT ALL PRIVILEGES ON DATABASE blog_test TO root;' -U postgres
+
+script:
+  - yarn run lint
+  - yarn run test
+  - yarn run coverage
+  - codecov
+  - yarn run build
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
