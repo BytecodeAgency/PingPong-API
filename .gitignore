@@ -54,3 +54,4 @@ yarn-error.log*
 
 # Misc
 .log
+knexfile.js
