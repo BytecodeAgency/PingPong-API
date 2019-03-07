@@ -4,4 +4,4 @@
 [![codecov](https://codecov.io/gh/BytecodeOpenSource/PingPong-API/branch/master/graph/badge.svg)](https://codecov.io/gh/BytecodeOpenSource/PingPong-API)
 [![Known Vulnerabilities](https://snyk.io/test/github/BytecodeOpenSource/PingPong-API/badge.svg?targetFile=package.json)](https://snyk.io/test/github/BytecodeOpenSource/PingPong-API?targetFile=package.json)
 [![NodeJS Version](https://img.shields.io/badge/Node%20Version-%3E%3D%20v8.0.0-green.svg)](https://img.shields.io/badge/Node%20Version-%3E%3D%20v8.0.0-green.svg)
-[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
+[![AGPLv3 license](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://github.com/BytecodeOpenSource/PingPong-API/blob/master/LICENSE)
