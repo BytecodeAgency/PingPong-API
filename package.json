@@ -23,7 +23,7 @@
     "build": "yarn run clean && tsc",
     "lint": "yarn run clean & yarn run lint:ts & yarn run lint:prettier",
     "lint:ts": "tslint --project tsconfig.json",
-    "lint:prettier": "prettier '**/*.ts'",
+    "lint:prettier": "prettier '**/*.ts' 1>/dev/null",
     "test": "NODE_ENV=test jest",
     "test:watch": "NODE_ENV=test jest --watch",
     "coverage": "NODE_ENV=test jest --coverage",
