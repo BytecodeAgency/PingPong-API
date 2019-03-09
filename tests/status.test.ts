@@ -1,7 +1,5 @@
-// tslint:disable-next-line
-import request from 'supertest';
+import request from 'supertest'; // tslint:disable-line
 import app from '../server/app';
-
 
 describe('status route', () => {
     it('should return status OK', () => {

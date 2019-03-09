@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 
 const addResponseTimeHeader = (app: express.Application) => {
     if (process.env.NODE_ENV === 'development') {

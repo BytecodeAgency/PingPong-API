@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 
 import morgan from './modules/morgan';
 import helmet from './modules/helmet';
