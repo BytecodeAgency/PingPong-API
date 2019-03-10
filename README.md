@@ -11,3 +11,6 @@
 After running `yarn`, run `cp knexfile.js.example knexfile.js` and set your
 database details in there.
 
+## Development
+
+For development and running the integration tests, PostgreSQL should be used.

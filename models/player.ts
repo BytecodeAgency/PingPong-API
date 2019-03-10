@@ -1,7 +1,7 @@
-import db from '../helpers/db';
+import knex from '../helpers/db';
 
 class Player implements IPlayerClass {
-    id?: number;
+    id: number;
     username: string;
     password: string;
     email: string;
@@ -29,16 +29,38 @@ class Player implements IPlayerClass {
         };
         return player;
     }
+
+    public static async addNewPlayer(newPlayer: IPlayerNew): Promise<IPlayer> {
+        const returning = ['id', 'username', 'email', 'teamid', 'timecreated'];
+        const addedPlayerArr = await knex('players')
+            .insert(newPlayer)
+            .returning(returning);
+        const addedPlayer: IPlayer = addedPlayerArr[0];
+        return addedPlayer;
+    }
+
+    public static async getPlayerById(id: number): Promise<IPlayer> {
+        const playerArr = await knex.select('*').from('players').where({id});
+        const player: IPlayer = playerArr[0];
+        return player;
+    }
 }
 
 
 interface IPlayer {
-    id?: number;
+    id: number;
     username: string;
     password: string;
     email: string;
     teamid: number;
     timecreated: Date;
+}
+
+interface IPlayerNew {
+    username: string;
+    password: string;
+    email: string;
+    teamid: number;
 }
 
 interface IPlayerClass {
