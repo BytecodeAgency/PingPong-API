@@ -18,7 +18,7 @@ class Player implements IPlayerClass {
         this.timecreated = playerData.timecreated;
     }
 
-    public get getPlayer(): IPlayer {
+    public getPlayer(): IPlayer {
         const player: IPlayer = {
             id: this.id,
             username: this.username,
@@ -68,6 +68,7 @@ interface IPlayerClass {
     password: string;
     email: string;
     teamid: number;
+    getPlayer(): IPlayer;
 }
 
 export default Player;

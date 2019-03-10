@@ -24,6 +24,12 @@ describe('Player model', () => {
         expect(() => new Player(testPlayerData)).not.toThrow();
     });
 
+    it('should be possible to use the getPlayer method', () => {
+        const playerInstance = new Player(testPlayerData);
+        const player = playerInstance.getPlayer();
+        expect(player).toEqual(testPlayerData);
+    });
+
 
     it('should be possible to add and fetch users', async () => {
         expect.assertions(5);
