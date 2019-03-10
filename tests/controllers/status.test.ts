@@ -1,5 +1,5 @@
-import request from 'supertest'; // tslint:disable-line
-import app from '../server/app';
+import request from 'supertest';
+import app from '../../server/app';
 
 describe('status route', () => {
     it('should return status OK', () => {
