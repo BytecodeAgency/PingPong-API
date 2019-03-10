@@ -2,10 +2,19 @@
 
 module.exports = {
 
+  test: {
+    client: 'postgresql',
+    connection: {
+      database: 'pingpongapitest',
+      user:     'dev',
+      password: 'dev'
+    },
+  },
+
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './dev.sqlite3'
+      filename: ':memory:'
     }
   },
 
