@@ -33,19 +33,15 @@ describe('Player model', () => {
 
     it('should be possible to add and fetch users', async () => {
         expect.assertions(5);
-        const newPlayer = await Player.addNewPlayer(testNewPlayerData);
-        const fetchedNewPlayer = await Player.getPlayerById(newPlayer.id);
+        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayer = newPlayerObject.getPlayer();
+        const fetchedNewPlayerObject = await Player.getPlayerById(newPlayer.id);
+        const fetchedNewPlayer = fetchedNewPlayerObject.getPlayer();
         expect(newPlayer.id).toBe(fetchedNewPlayer.id);
         expect(newPlayer.username).toBe(fetchedNewPlayer.username);
         expect(newPlayer.email).toBe(fetchedNewPlayer.email);
         expect(newPlayer.teamid).toBe(fetchedNewPlayer.teamid);
         expect(newPlayer.timecreated).toEqual(fetchedNewPlayer.timecreated);
-    });
-
-    it('should not return pass hash after creation', async () => {
-        expect.assertions(1);
-        const newPlayer = await Player.addNewPlayer(testNewPlayerData);
-        expect(newPlayer.password).toBeUndefined();
     });
 });
 
