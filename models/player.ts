@@ -1,4 +1,5 @@
 import knex from '../helpers/db';
+import authHelper from '../helpers/auth';
 
 class Player implements IPlayerClass {
     private id: number;
@@ -31,11 +32,12 @@ class Player implements IPlayerClass {
     }
 
     public static async addNewPlayer(newPlayer: IPlayerNew): Promise<Player> {
+        const newPlayerData = await getNewPlayerData(newPlayer);
         const returning = [
             'id', 'username', 'password', 'email', 'teamid', 'timecreated',
         ];
         const addedPlayerArr = await knex('players')
-            .insert(newPlayer)
+            .insert(newPlayerData)
             .returning(returning);
         const addedPlayer: IPlayer = addedPlayerArr[0];
         const player = new Player(addedPlayer);
@@ -43,12 +45,42 @@ class Player implements IPlayerClass {
     }
 
     public static async getPlayerById(id: number): Promise<Player> {
-        const playerArr = await knex.select('*').from('players').where({id});
+        const playerArr = await knex.select('*').from('players').where({ id });
         const playerData: IPlayer = playerArr[0];
         const player: Player = new Player(playerData);
         return player;
     }
+
+    public static async getPlayerByUsername(username: string): Promise<Player> {
+        const playerArr = await knex.select('*')
+            .from('players')
+            .where({ username });
+        if (playerArr.length === 0) {
+            throw new Error('No player found');
+        }
+        const playerData: IPlayer = playerArr[0];
+        const player: Player = new Player(playerData);
+        return player;
+    }
+
+    // tslint:disable-next-line max-line-length
+    public static async authenticatePlayerByUsername (username: string, password: string): Promise<boolean> {
+        const player = await Player.getPlayerByUsername(username);
+        const hashed = player.password;
+        const isAuth = await authHelper.checkPasswordHash(password, hashed);
+        return isAuth;
+    }
 }
+
+const getNewPlayerData = async (newPlayer: IPlayerNew): Promise<IPlayerNew> => {
+    const plainTextPass = newPlayer.password;
+    const hashedPass = await authHelper.generatePasswordHash(plainTextPass);
+    const newPlayerWithPassHash = {
+        ...newPlayer,
+        password: hashedPass,
+    };
+    return newPlayerWithPassHash;
+};
 
 
 interface IPlayer {
