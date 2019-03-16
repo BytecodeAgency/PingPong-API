@@ -1,9 +1,7 @@
 import * as jwt from 'jwt-simple';
-
-const authHelper = require('../../helpers/auth');
+import authHelper from '../../helpers/auth';
 
 const jwtExpiresInDays = 7;
-
 const testPassword = 'the_test_password';
 const getPasswordHash = async () =>
     authHelper.generatePasswordHash(testPassword);
@@ -50,7 +48,7 @@ describe('Authentication helper', () => {
     test('JWT dates create a valid date object', () => {
         const authToken = authHelper.generateJWT(payloadData);
         const decodedPayload = authHelper.decodeJWT(authToken);
-        const payloadDate = new Date(decodedPayload.expires);
+        const payloadDate = new Date(decodedPayload.exp);
         expect(payloadDate).toBeInstanceOf(Date);
     });
 
