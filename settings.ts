@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { stringToNumber } from './helpers/string-helpers';
 
 type Dict = { [key: string]: string };
 
@@ -12,7 +13,8 @@ const keyValueMapper = (entryString: string): Dict => {
 };
 
 const keyValuesToObject = (accumulator: {}, current: Dict): Dict => {
-    const key = current.keys[0];
+    const keys = Object.keys(current);
+    const key = keys[0];
     const value = current[key];
     const newAccumulator: Dict = accumulator;
     newAccumulator[key] = value;
@@ -26,9 +28,16 @@ const dotEnv = dotEnvFile
     .map(entry => keyValueMapper(entry))
     .reduce(keyValuesToObject);
 
-const settings = {
+const settings: Settings = {
     jwtSecret: dotEnv.JWT_SECRET,
+    jwtExpiresInDays: stringToNumber(dotEnv.JWT_EXPIRES_IN_DAYS),
+    saltRounds: stringToNumber(dotEnv.SALT_ROUNDS),
 };
 
 export default settings;
 
+interface Settings {
+    jwtSecret: string;
+    jwtExpiresInDays: number;
+    saltRounds: number;
+}
