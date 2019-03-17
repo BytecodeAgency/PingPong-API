@@ -2,9 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jwt-simple';
 import settings from '../settings';
 
-const saltRounds: number = 10;
-const { jwtSecret } = settings;
-const jwtExpiresInDays: number = 7;
+const { jwtSecret, jwtExpiresInDays, saltRounds } = settings;
 
 const generatePasswordHash = async (plainText: string): Promise<string> => {
     const hashed: string = await new Promise((resolve, reject) =>

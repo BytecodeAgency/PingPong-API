@@ -1,7 +1,8 @@
 import * as jwt from 'jwt-simple';
+import settings from '../../settings';
 import authHelper from '../../helpers/auth';
 
-const jwtExpiresInDays = 7;
+const { jwtExpiresInDays } = settings;
 const testPassword = 'the_test_password';
 const getPasswordHash = async () =>
     authHelper.generatePasswordHash(testPassword);
@@ -66,17 +67,22 @@ describe('Authentication helper', () => {
         expect(payloadIssuedAt).toBe(baseTime);
     });
 
-    test('JWT should expire in JWT_EXPIRES_IN_DAYS days', () => {
+    test('JWT should expire in JWT_EXPIRES_IN_DAYS +/- 1 days', () => {
         const authToken = authHelper.generateJWT(payloadData, baseTime);
         const decodedPayload = authHelper.decodeJWT(authToken);
         const payloadIssuedAtDate = decodedPayload.iat;
         const payloadExpiryDate = decodedPayload.exp;
-        const expectedDifferenceInMs = jwtExpiresInDays * 1000 * 60 * 60 * 24;
-        const upperBound = expectedDifferenceInMs + 2500;
-        const lowerBound = expectedDifferenceInMs - 2500;
-        const difference = payloadExpiryDate - payloadIssuedAtDate;
-        expect(difference).toBeGreaterThanOrEqual(lowerBound);
-        expect(difference).toBeLessThanOrEqual(upperBound);
+
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const msDifference = payloadExpiryDate - payloadIssuedAtDate;
+        const expiresInDays = msDifference/msPerDay;
+
+        const maxDifference = 1;
+        const upperBound = jwtExpiresInDays + maxDifference;
+        const lowerBound = jwtExpiresInDays - maxDifference;
+
+        expect(expiresInDays).toBeGreaterThanOrEqual(lowerBound);
+        expect(expiresInDays).toBeLessThanOrEqual(upperBound);
     });
 
     test('decodeJWT should throw error if JWT is invalid', () => {
