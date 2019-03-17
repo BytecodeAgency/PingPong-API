@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jwt-simple');
+import bcrypt from 'bcrypt';
+import jwt from 'jwt-simple';
 import settings from '../settings';
 
 const saltRounds: number = 10;
