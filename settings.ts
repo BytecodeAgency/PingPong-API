@@ -11,10 +11,20 @@ const keyValueMapper = (entryString: string): Dict => {
     return newEntry;
 };
 
-const dotEnvFile = fs.readFileSync('.env', 'UTF-8');
-const dotEnvArr = dotEnvFile.split('\n').filter(entry => entry);
-const dotEnvValues = dotEnvArr.map(entry => keyValueMapper(entry));
+const keyValuesToObject = (accumulator: {}, current: Dict): Dict => {
+    const key = current.keys[0];
+    const value = current[key];
+    const newAccumulator: Dict = accumulator;
+    newAccumulator[key] = value;
+    return newAccumulator;
+};
 
+const dotEnvFile = fs.readFileSync('.env', 'UTF-8');
+const dotEnv = dotEnvFile
+    .split('\n')
+    .filter(entry => entry)
+    .map(entry => keyValueMapper(entry))
+    .reduce(keyValuesToObject);
 
 const settings = {
     jwtSecret: dotEnv.JWT_SECRET,
