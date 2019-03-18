@@ -20,6 +20,15 @@ const testNewPlayerData = {
     teamid: 100,
 };
 
+const createNewPlayer = async (): Promise<Player> => {
+    const newTeamData = { name: 'playermodeltestteam '};
+    const newTeam = await knex('teams').returning(['id']).insert(newTeamData);
+    const newTeamId = newTeam[0].id;
+    const testNewPlayerDataWithId = { ...testNewPlayerData, teamid: newTeamId};
+    const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+    return newPlayerObject;
+};
+
 describe('Player model', () => {
     it('should create a player object without errors', () => {
         expect(() => new Player(testPlayerData)).not.toThrow();
@@ -33,7 +42,7 @@ describe('Player model', () => {
 
     it('should be possible to add users and fetch by id', async () => {
         expect.assertions(5);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const fetchedNewPlayerObject = await Player.getPlayerById(newPlayer.id);
         const fetchedNewPlayer = fetchedNewPlayerObject.getPlayer();
@@ -46,7 +55,7 @@ describe('Player model', () => {
 
     it('should be possible to add users and fetch by username', async () => {
         expect.assertions(5);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const fetchedNewPlayerObject =
             await Player.getPlayerByUsername(newPlayer.username);
@@ -60,7 +69,7 @@ describe('Player model', () => {
 
     it('added users should have hashed passwords', async () => {
         expect.assertions(2);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const fetchedNewPlayerObject = await Player.getPlayerById(newPlayer.id);
         const fetchedNewPlayer = fetchedNewPlayerObject.getPlayer();
@@ -70,7 +79,7 @@ describe('Player model', () => {
 
     it('should be possible to authenticate users by username', async () => {
         expect.assertions(1);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const user = testNewPlayerData.username;
         const pass = testNewPlayerData.password;
@@ -80,7 +89,7 @@ describe('Player model', () => {
 
     it('should not authenticate users with incorrect an password', async () => {
         expect.assertions(1);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const user = testNewPlayerData.username;
         const pass = 'incorrectpass';
