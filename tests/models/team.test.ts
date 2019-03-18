@@ -26,7 +26,7 @@ describe('Team model', () => {
     });
 
     it('should be possible to add users and fetch by id', async () => {
-        expect.assertions(5);
+        expect.assertions(4);
         const newTeamObject = await Team.addNewTeam(testNewTeamData);
         const newTeam = newTeamObject.getTeam();
         const fetchedNewTeamObject = await Team.getTeamById(newTeam.id);
