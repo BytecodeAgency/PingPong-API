@@ -64,7 +64,7 @@ class Player implements IPlayerClass {
     }
 
     // tslint:disable-next-line max-line-length
-    public static async authenticatePlayerByUsername (username: string, password: string): Promise<boolean> {
+    public static async authenticatePlayerByUsername(username: string, password: string): Promise<boolean> {
         const player = await Player.getPlayerByUsername(username);
         const hashed = player.password;
         const isAuth = await authHelper.checkPasswordHash(password, hashed);
