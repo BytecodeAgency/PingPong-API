@@ -25,7 +25,7 @@ const createNewPlayer = async (): Promise<Player> => {
     const newTeam = await knex('teams').returning(['id']).insert(newTeamData);
     const newTeamId = newTeam[0].id;
     const testNewPlayerDataWithId = { ...testNewPlayerData, teamid: newTeamId};
-    const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+    const newPlayerObject = await Player.addNewPlayer(testNewPlayerDataWithId);
     return newPlayerObject;
 };
 
