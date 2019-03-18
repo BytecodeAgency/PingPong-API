@@ -70,6 +70,16 @@ class Player implements IPlayerClass {
         const isAuth = await authHelper.checkPasswordHash(password, hashed);
         return isAuth;
     }
+
+    public static async deletePlayerById(userId: number): Promise<number> {
+        const deletedPlayerArr = await knex('players')
+            .returning([ 'id' ])
+            .where({ id: userId })
+            .delete();
+        const deletedPlayer = deletedPlayerArr[0];
+        const deletedPlayerId = deletedPlayer.id;
+        return deletedPlayerId;
+    }
 }
 
 const getNewPlayerData = async (newPlayer: IPlayerNew): Promise<IPlayerNew> => {
