@@ -43,6 +43,7 @@
     "yarn": "^1.13.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/helmet": "^0.0.42",
     "@types/jest": "^24.0.9",
     "@types/knex": "^0.15.2",

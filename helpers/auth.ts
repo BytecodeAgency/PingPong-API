@@ -1,9 +1,8 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jwt-simple');
+import bcrypt from 'bcrypt';
+import jwt from 'jwt-simple';
+import settings from '../settings';
 
-const saltRounds: number = 10;
-const JWT_SECRET: string = 'secret'; // TODO: Integrate .env
-const jwtExpiresInDays: number = 7;
+const { jwtSecret, jwtExpiresInDays, saltRounds } = settings;
 
 const generatePasswordHash = async (plainText: string): Promise<string> => {
     const hashed: string = await new Promise((resolve, reject) =>
@@ -50,12 +49,12 @@ const generatePayload = (data: {}, issuedAt?: number): IPayload => {
 
 const generateJWT = (data: {}, issuedAt?: number): string => {
     const payload = generatePayload(data, issuedAt);
-    const token: string = jwt.encode(payload, JWT_SECRET);
+    const token: string = jwt.encode(payload, jwtSecret);
     return token;
 };
 
 const decodeJWT = (token: string): IPayload => {
-    const decoded = jwt.decode(token, JWT_SECRET);
+    const decoded = jwt.decode(token, jwtSecret);
     return decoded;
 };
 

@@ -22,6 +22,7 @@ before_script:
   - psql -c 'CREATE DATABASE pingpongapitest;' -U postgres
   - psql -c 'GRANT ALL PRIVILEGES ON DATABASE pingpongapitest TO dev;' -U postgres
   - cp knexfile.js.example knexfile.js
+  - cp .env.example .env
 
 script:
   - yarn run lint
