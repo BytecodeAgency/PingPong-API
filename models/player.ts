@@ -72,7 +72,7 @@ class Player implements IPlayerClass {
     }
 
     public static async deletePlayerById(userId: number): Promise<number> {
-        const deletedPlayerArr = await knex('players')
+        const deletedPlayerArr = await knex('players') // TODO: convert to anonymize thingy
             .returning([ 'id' ])
             .where({ id: userId })
             .delete();

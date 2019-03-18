@@ -97,7 +97,7 @@ describe('Player model', () => {
         expect(isAuth).toBe(false);
     });
 
-    it('should be possible to delete users', async () => {
+    it('should be possible to delete users', async () => { // TODO: debug
         expect.assertions(3);
         const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
         const newPlayer = newPlayerObject.getPlayer();
