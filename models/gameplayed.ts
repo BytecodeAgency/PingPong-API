@@ -49,13 +49,6 @@ class GamePlayed implements IGamePlayedClass {
         return gamePlayed;
     }
 
-    public static async getGamePlayedById(id: number): Promise<GamePlayed> {
-        const gamePlayedArr = await knex.select('*').from('gamesplayed').where({ id });
-        const gamePlayedData: IGamePlayed = gamePlayedArr[0];
-        const gamePlayed: GamePlayed = new GamePlayed(gamePlayedData);
-        return gamePlayed;
-    }
-
     // TODO: What if there are no games found?
     // tslint:disable-next-line max-line-length
     public static async getGamesPlayedForTeam(id: number): Promise<GamePlayed[]> {
