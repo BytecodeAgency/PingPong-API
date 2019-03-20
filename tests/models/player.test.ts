@@ -97,18 +97,18 @@ describe('Player model', () => {
         expect(isAuth).toBe(false);
     });
 
-    it('should be possible to delete users', async () => { // TODO: debug
-        expect.assertions(3);
+    it('should be possible to delete users using anonymization', async () => {
+        expect.assertions(5);
         const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
         const newPlayer = newPlayerObject.getPlayer();
         expect(newPlayer.id).toBeDefined();
         const deletedUserId = await Player.deletePlayerById(newPlayer.id);
         expect (deletedUserId).toBe(newPlayer.id);
-        const fetchedUserArr = await knex
-            .select('*')
-            .from('players')
-            .where({ id: deletedUserId});
-        expect(fetchedUserArr[0]).toBeUndefined();
+        const fetchedPlayerObject = await Player.getPlayerById(newPlayer.id);
+        const fetchedPlayer = fetchedPlayerObject.getPlayer();
+        expect(fetchedPlayer.username).not.toBe(newPlayer.username);
+        expect(fetchedPlayer.password).not.toBe(newPlayer.password);
+        expect(fetchedPlayer.email).not.toBe(newPlayer.email);
     });
 });
 

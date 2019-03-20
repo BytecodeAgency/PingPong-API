@@ -72,10 +72,18 @@ class Player implements IPlayerClass {
     }
 
     public static async deletePlayerById(userId: number): Promise<number> {
-        const deletedPlayerArr = await knex('players') // TODO: convert to anonymize thingy
+        const playerCurrent = await Player.getPlayerById(userId);
+        const newUsername = getRandomUsername();
+        const newPlayerData = {
+            username: newUsername,
+            password: `${newUsername}-pass`,
+            email: `${newUsername}@pingpong.bytecode.nl`
+        };
+        const updatedUser = { ...playerCurrent, ...newPlayerData };
+        const deletedPlayerArr = await knex('players')
             .returning([ 'id' ])
             .where({ id: userId })
-            .delete();
+            .update(updatedUser);
         const deletedPlayer = deletedPlayerArr[0];
         const deletedPlayerId = deletedPlayer.id;
         return deletedPlayerId;
@@ -92,6 +100,11 @@ const getNewPlayerData = async (newPlayer: IPlayerNew): Promise<IPlayerNew> => {
     return newPlayerWithPassHash;
 };
 
+const getRandomUsername = () => {
+    const base = "Jahne Doe";
+    const randomNumber = Math.floor(Math.random()*1000000000);
+    const randomUsername = `${base}-${randomNumber}`;
+};
 
 interface IPlayer {
     id: number;
