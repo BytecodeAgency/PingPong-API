@@ -24,9 +24,9 @@
     "lint": "yarn run clean & yarn run lint:ts & yarn run lint:prettier",
     "lint:ts": "tslint --project tsconfig.json",
     "lint:prettier": "prettier '**/*.ts' 1>/dev/null",
-    "test": "NODE_ENV=test jest",
-    "test:watch": "NODE_ENV=test jest --watch",
-    "coverage": "NODE_ENV=test jest --coverage",
+    "test": "NODE_ENV=test jest -i",
+    "test:watch": "NODE_ENV=test jest -i --watch",
+    "coverage": "NODE_ENV=test jest -i --coverage",
     "reinstall": "rm -rf node_modules && yarn",
     "clean": "rm -rf dist build coverage"
   },
