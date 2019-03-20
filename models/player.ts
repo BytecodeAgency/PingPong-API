@@ -100,10 +100,11 @@ const getNewPlayerData = async (newPlayer: IPlayerNew): Promise<IPlayerNew> => {
     return newPlayerWithPassHash;
 };
 
-const getRandomUsername = () => {
+const getRandomUsername = (): String => {
     const base = "Jahne Doe";
     const randomNumber = Math.floor(Math.random()*1000000000);
     const randomUsername = `${base}-${randomNumber}`;
+    return randomUsername;
 };
 
 interface IPlayer {

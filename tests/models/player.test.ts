@@ -17,7 +17,7 @@ const testNewPlayerData = {
     username: 'someuser',
     password: 'supersecret',
     email: 'admin@bytecode.nl',
-    teamid: 100,
+    teamid: 1,
 };
 
 const createNewPlayer = async (): Promise<Player> => {
@@ -99,13 +99,13 @@ describe('Player model', () => {
 
     it('should be possible to delete users using anonymization', async () => {
         expect.assertions(5);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         expect(newPlayer.id).toBeDefined();
-        
+
         const deletedUserId = await Player.deletePlayerById(newPlayer.id);
         expect (deletedUserId).toBe(newPlayer.id);
-        
+
         const fetchedPlayerObject = await Player.getPlayerById(deletedUserId);
         const fetchedPlayer = fetchedPlayerObject.getPlayer();
         expect(fetchedPlayer.username).not.toBe(newPlayer.username);
