@@ -1,9 +1,9 @@
 const createPlayersTable = (table, knex) => {
     table.increments('id');
-    table.string('username').notNullable()//.unique();
+    table.string('username').notNullable().unique();
     table.string('password').notNullable();
-    table.string('email').notNullable()//.unique();
-    table.integer('teamid').notNullable().references('id').inTable('teams'); // TODO: debug
+    table.string('email').notNullable().unique();
+    table.integer('teamid').notNullable().references('id').inTable('teams');
     table.date('timecreated').defaultTo(knex.fn.now());
 };
 

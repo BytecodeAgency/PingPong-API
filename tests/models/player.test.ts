@@ -102,9 +102,11 @@ describe('Player model', () => {
         const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
         const newPlayer = newPlayerObject.getPlayer();
         expect(newPlayer.id).toBeDefined();
+        
         const deletedUserId = await Player.deletePlayerById(newPlayer.id);
         expect (deletedUserId).toBe(newPlayer.id);
-        const fetchedPlayerObject = await Player.getPlayerById(newPlayer.id);
+        
+        const fetchedPlayerObject = await Player.getPlayerById(deletedUserId);
         const fetchedPlayer = fetchedPlayerObject.getPlayer();
         expect(fetchedPlayer.username).not.toBe(newPlayer.username);
         expect(fetchedPlayer.password).not.toBe(newPlayer.password);
