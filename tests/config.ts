@@ -10,7 +10,7 @@ const prepareDatabase = (done: any): void => {
     rollbackMigrateAndFill().then(() => done());
 };
 
-export const useTestDatabase = ():void => {
-    beforeEach(done => prepareDatabase(done));
-    afterAll(() => knex.destroy());
+export const useTestDatabase = async (): Promise<void> => {
+    beforeEach(async done => await prepareDatabase(done));
+    afterAll(async() => await knex.destroy());
 };
