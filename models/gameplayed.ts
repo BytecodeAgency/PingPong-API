@@ -1,4 +1,5 @@
 import knex from '../helpers/db';
+import { getLeaderboard } from '../helpers/scores';
 
 class GamePlayed implements IGamePlayedClass {
     private id: number;
@@ -58,6 +59,10 @@ class GamePlayed implements IGamePlayedClass {
         const gamesPlayed: GamePlayed[] = gamePlayedArr
             .map((gamePlayed: IGamePlayed) => new GamePlayed(gamePlayed));
         return gamesPlayed;
+    }
+
+    public static async getAllDataForTeam(id: number): Promise<ITeamData> {
+        // return
     }
 }
 
