@@ -63,9 +63,9 @@ class GamePlayed implements IGamePlayedClass {
         return gamesPlayed;
     }
 
-    public static async getAllDataForTeam(id: number): Promise<ITeamData> {
+    // public static async getAllDataForTeam(id: number): Promise<ITeamData> {
         // return
-    }
+    // }
 }
 
 interface IGamePlayedClass {
