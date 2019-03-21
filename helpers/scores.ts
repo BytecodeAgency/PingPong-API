@@ -1,3 +1,7 @@
+import IGamePlayed from '../typescript/IGamePlayed';
+
+// TODO: Make
+
 const getListOfPlayers = (gamesPlayed: IGamePlayed[]): number[] => {
     return [0];
 };
@@ -30,20 +34,8 @@ export const getStats = (gamesPlayed: IGamePlayed[]): ILeader[] => {
 };
 
 export default (gamesPlayed: IGamePlayed[]): IData => {
-    const headToHeadScores = getHeadToHeadScores(gamesPlayed)
-}
-
-interface IGamePlayed {
-    id: number;
-    teamid: number;
-    player1id: number;
-    player1score: number;
-    player2id: number;
-    player2score: number;
-    winner: number;
-    addedby: number;
-    playedon: Date;
-}
+    const headToHeadScores = getHeadToHeadScores(gamesPlayed);
+};
 
 interface ILeader {
     rank: number;

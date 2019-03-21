@@ -1,5 +1,7 @@
 import knex from '../helpers/db';
 import authHelper from '../helpers/auth';
+import IPlayer from '../typescript/IPlayer';
+import IPlayerNew from '../typescript/IPlayerNew';
 
 class Player implements IPlayerClass {
     private id: number;
@@ -106,22 +108,6 @@ const getRandomUsername = (): String => {
     const randomUsername = `${base}-${randomNumber}`;
     return randomUsername;
 };
-
-interface IPlayer {
-    id: number;
-    username: string;
-    password: string;
-    email: string;
-    teamid: number;
-    timecreated: Date;
-}
-
-interface IPlayerNew {
-    username: string;
-    password: string;
-    email: string;
-    teamid: number;
-}
 
 interface IPlayerClass {
     getPlayer(): IPlayer;

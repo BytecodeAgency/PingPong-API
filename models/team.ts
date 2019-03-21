@@ -1,4 +1,6 @@
 import knex from '../helpers/db';
+import ITeam from '../typescript/ITeam';
+import ITeamNew from '../typescript/ITeamNew';
 
 class Team implements ITeamClass {
     private id: number;
@@ -42,17 +44,6 @@ class Team implements ITeamClass {
         const team: Team = new Team(teamData);
         return team;
     }
-}
-
-interface ITeam {
-    id: number;
-    name: string;
-    invitecode?: string;
-    timecreated: Date;
-}
-
-interface ITeamNew {
-    name: string;
 }
 
 interface ITeamClass {

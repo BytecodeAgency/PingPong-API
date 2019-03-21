@@ -1,5 +1,7 @@
 import knex from '../helpers/db';
-import { getLeaderboard } from '../helpers/scores';
+import IGamePlayed from '../typescript/IGamePlayed';
+import IGamePlayedNew from '../typescript/IGamePlayedNew';
+import { getLeaderboard } from '../helpers/scores'; // TODO: Implement
 
 class GamePlayed implements IGamePlayedClass {
     private id: number;
@@ -64,28 +66,6 @@ class GamePlayed implements IGamePlayedClass {
     public static async getAllDataForTeam(id: number): Promise<ITeamData> {
         // return
     }
-}
-
-interface IGamePlayed {
-    id: number;
-    teamid: number;
-    player1id: number;
-    player1score: number;
-    player2id: number;
-    player2score: number;
-    winner: number;
-    addedby: number;
-    playedon: Date;
-}
-
-interface IGamePlayedNew {
-    teamid: number;
-    player1id: number;
-    player1score: number;
-    player2id: number;
-    player2score: number;
-    winner: number;
-    addedby: number;
 }
 
 interface IGamePlayedClass {
