@@ -18,8 +18,8 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "dev": "nodemon",
-    "start": "ts-node server/server.ts",
+    "dev": "NODE_ENV=development nodemon",
+    "start": "NODE_ENV=production ts-node server/server.ts",
     "build": "yarn run clean && tsc --build",
     "lint": "yarn run clean & yarn run lint:ts & yarn run lint:prettier",
     "lint:ts": "tslint --project tsconfig.json",

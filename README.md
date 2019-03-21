@@ -31,7 +31,13 @@ Now set your configs in the `knexfile.js` and `.env` files.
 
 ## Running the application
 
-For starting the application, run `yarn run start`
+For starting the application, run `yarn run start`, with the `NODE_ENV` environment variable set matching the environment you want to use in your `knexfile.js` file.
+
+The `NODE_ENV`s available by default (package.json) are:
+
+* `development`, for `yarn run dev`
+* `production`, for `yarn run start`
+* `test`, for `yarn run test`, `yarn run test:watch` and `yarn run coverage`
 
 ## Development
 
