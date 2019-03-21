@@ -2,7 +2,7 @@ import IGamePlayed from '../typescript/IGamePlayed';
 
 // TODO: Make
 
-const getListOfPlayers = (gamesPlayed: IGamePlayed[]): number[] => {
+const getListOfActivePlayers = (gamesPlayed: IGamePlayed[]): number[] => {
     return [0];
 };
 
@@ -33,7 +33,7 @@ export const getStats = (gamesPlayed: IGamePlayed[]): ILeader[] => {
     }];
 };
 
-export default (gamesPlayed: IGamePlayed[]): IData => {
+export default (gamesPlayed: IGamePlayed[]): ITeamScoreData => {
     const headToHeadScores = getHeadToHeadScores(gamesPlayed);
 };
 
@@ -44,6 +44,6 @@ interface ILeader {
     winPercentage: number;
 }
 
-interface IData {
-
+interface ITeamScoreData {
+    // TODO: Create
 }

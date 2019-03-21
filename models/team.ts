@@ -1,4 +1,5 @@
 import knex from '../helpers/db';
+import Player from './player';
 import ITeam from '../typescript/ITeam';
 import ITeamNew from '../typescript/ITeamNew';
 
@@ -7,7 +8,6 @@ class Team implements ITeamClass {
     private name: string;
     private invitecode?: string;
     private timecreated: Date;
-
 
     constructor(teamData: ITeam) {
         this.id = teamData.id;
@@ -24,6 +24,11 @@ class Team implements ITeamClass {
             timecreated: this.timecreated,
         };
         return team;
+    }
+
+    public async getTeamMembers(): Promise<Player[]> {
+        // TODO: Make tests
+        // TODO: Make method
     }
 
     public static async addNewTeam(newTeam: ITeamNew): Promise<Team> {
@@ -48,6 +53,7 @@ class Team implements ITeamClass {
 
 interface ITeamClass {
     getTeam(): ITeam;
+    getTeamMembers(): Promise<Player[]>;
 }
 
 export default Team;
