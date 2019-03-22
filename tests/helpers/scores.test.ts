@@ -1,7 +1,11 @@
-import { getLeaderboard } from '../../helpers/scores';
-// TODO: Write
-describe('getLeaderboard', () => {
-    it('should return the correct leaderboard', () => {
-        expect(42).toBe(42);
+import testGames from '../data/testgames';
+
+import { getListOfActivePlayers } from '../../helpers/scores';
+
+describe('getListOfActivePlayers', () => {
+    it('should return all active players', () => {
+        const activePlayers = getListOfActivePlayers(testGames);
+        const expectedPlayers = [ 42, 142, 420 ];
+        expect(activePlayers).toEqual(expectedPlayers);
     });
 });
