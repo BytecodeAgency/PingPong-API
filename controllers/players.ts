@@ -20,7 +20,7 @@ const handleAuth = async (req: Request, res: Response): Promise<void> => {
     const user = userObj.getPlayer();
     const jwt = userObj.getJWT();
     const payload = {
-        jwt,
+        jwt: jwt,
         userid: user.id,
         username: user.username,
         teamid: user.teamid,
@@ -36,7 +36,16 @@ const registerUser = async(req: Request, res: Response): Promise<void> => {
         teamid: req.body.teamid,
         password: hashedPass,
     };
-    const player = Player.addNewPlayer(playerData);
+    const player = await Player.addNewPlayer(playerData);
+    const user = player.getPlayer();
+    const jwt = player.getJWT();
+    const payload = {
+        jwt: jwt,
+        userid: user.id,
+        username: user.username,
+        teamid: user.teamid,
+    };
+    res.status(201).send(payload);
 }
 
 export default class PlayerController {
