@@ -4,7 +4,7 @@ import middleware from '../middleware';
 
 const app = express();
 middleware(app);
-app.use('/', routes);
+app.use('/api/v1/', routes);
 
 export default app;
 
