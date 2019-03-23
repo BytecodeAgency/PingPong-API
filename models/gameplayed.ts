@@ -52,20 +52,23 @@ class GamePlayed implements IGamePlayedClass {
         return gamePlayed;
     }
 
-    // TODO: What if there are no games found?
     // tslint:disable-next-line max-line-length
     public static async getGamesPlayedForTeam(id: number): Promise<GamePlayed[]> {
         const gamePlayedArr = await knex
             .select('*')
             .from('gamesplayed').where({ teamid: id });
+        if (!gamePlayedArr) {
+            throw new Error('No games found');
+        }
         const gamesPlayed: GamePlayed[] = gamePlayedArr
             .map((gamePlayed: IGamePlayed) => new GamePlayed(gamePlayed));
         return gamesPlayed;
     }
 
-    // public static async getAllDataForTeam(id: number): Promise<ITeamData> {
-        // return
-    // }
+    public static async getTeamScores(id: number): Promise<ITeamData> {
+        const playedGames = this.getGamesPlayedForTeam(id);
+        return thingj7y;
+    }
 }
 
 interface IGamePlayedClass {

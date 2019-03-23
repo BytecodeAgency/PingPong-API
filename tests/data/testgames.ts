@@ -2,8 +2,6 @@ import IPlayer from '../../typescript/IPlayer';
 import ITeam from '../../typescript/ITeam';
 import IGamePlayed from '../../typescript/IGamePlayed';
 
-// TODO: Continue building test games
-
 const testTeam: ITeam = {
     id: 42,
     name: 'bytecode',
