@@ -1,4 +1,5 @@
 import Player from '../../models/player';
+import knex from '../../helpers/db';
 import { useTestDatabase } from '../config';
 
 useTestDatabase();
@@ -16,7 +17,16 @@ const testNewPlayerData = {
     username: 'someuser',
     password: 'supersecret',
     email: 'admin@bytecode.nl',
-    teamid: 100,
+    teamid: 1,
+};
+
+const createNewPlayer = async (): Promise<Player> => {
+    const newTeamData = { name: 'playermodeltestteam '};
+    const newTeam = await knex('teams').returning(['id']).insert(newTeamData);
+    const newTeamId = newTeam[0].id;
+    const testNewPlayerDataWithId = { ...testNewPlayerData, teamid: newTeamId};
+    const newPlayerObject = await Player.addNewPlayer(testNewPlayerDataWithId);
+    return newPlayerObject;
 };
 
 describe('Player model', () => {
@@ -32,7 +42,7 @@ describe('Player model', () => {
 
     it('should be possible to add users and fetch by id', async () => {
         expect.assertions(5);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const fetchedNewPlayerObject = await Player.getPlayerById(newPlayer.id);
         const fetchedNewPlayer = fetchedNewPlayerObject.getPlayer();
@@ -45,7 +55,7 @@ describe('Player model', () => {
 
     it('should be possible to add users and fetch by username', async () => {
         expect.assertions(5);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const fetchedNewPlayerObject =
             await Player.getPlayerByUsername(newPlayer.username);
@@ -59,7 +69,7 @@ describe('Player model', () => {
 
     it('added users should have hashed passwords', async () => {
         expect.assertions(2);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const fetchedNewPlayerObject = await Player.getPlayerById(newPlayer.id);
         const fetchedNewPlayer = fetchedNewPlayerObject.getPlayer();
@@ -69,7 +79,7 @@ describe('Player model', () => {
 
     it('should be possible to authenticate users by username', async () => {
         expect.assertions(1);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const user = testNewPlayerData.username;
         const pass = testNewPlayerData.password;
@@ -79,12 +89,28 @@ describe('Player model', () => {
 
     it('should not authenticate users with incorrect an password', async () => {
         expect.assertions(1);
-        const newPlayerObject = await Player.addNewPlayer(testNewPlayerData);
+        const newPlayerObject = await createNewPlayer();
         const newPlayer = newPlayerObject.getPlayer();
         const user = testNewPlayerData.username;
         const pass = 'incorrectpass';
         const isAuth = await Player.authenticatePlayerByUsername(user, pass);
         expect(isAuth).toBe(false);
+    });
+
+    it('should be possible to delete users using anonymization', async () => {
+        expect.assertions(5);
+        const newPlayerObject = await createNewPlayer();
+        const newPlayer = newPlayerObject.getPlayer();
+        expect(newPlayer.id).toBeDefined();
+
+        const deletedUserId = await Player.deletePlayerById(newPlayer.id);
+        expect (deletedUserId).toBe(newPlayer.id);
+
+        const fetchedPlayerObject = await Player.getPlayerById(deletedUserId);
+        const fetchedPlayer = fetchedPlayerObject.getPlayer();
+        expect(fetchedPlayer.username).not.toBe(newPlayer.username);
+        expect(fetchedPlayer.password).not.toBe(newPlayer.password);
+        expect(fetchedPlayer.email).not.toBe(newPlayer.email);
     });
 });
 

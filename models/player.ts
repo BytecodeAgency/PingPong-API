@@ -1,5 +1,7 @@
 import knex from '../helpers/db';
 import authHelper from '../helpers/auth';
+import IPlayer from '../typescript/IPlayer';
+import IPlayerNew from '../typescript/IPlayerNew';
 
 class Player implements IPlayerClass {
     private id: number;
@@ -64,11 +66,29 @@ class Player implements IPlayerClass {
     }
 
     // tslint:disable-next-line max-line-length
-    public static async authenticatePlayerByUsername (username: string, password: string): Promise<boolean> {
+    public static async authenticatePlayerByUsername(username: string, password: string): Promise<boolean> {
         const player = await Player.getPlayerByUsername(username);
         const hashed = player.password;
         const isAuth = await authHelper.checkPasswordHash(password, hashed);
         return isAuth;
+    }
+
+    public static async deletePlayerById(userId: number): Promise<number> {
+        const playerCurrent = await Player.getPlayerById(userId);
+        const newUsername = getRandomUsername();
+        const newPlayerData = {
+            username: newUsername,
+            password: `${newUsername}-pass`,
+            email: `${newUsername}@pingpong.bytecode.nl`
+        };
+        const updatedUser = { ...playerCurrent, ...newPlayerData };
+        const deletedPlayerArr = await knex('players')
+            .returning([ 'id' ])
+            .where({ id: userId })
+            .update(updatedUser);
+        const deletedPlayer = deletedPlayerArr[0];
+        const deletedPlayerId = deletedPlayer.id;
+        return deletedPlayerId;
     }
 }
 
@@ -82,22 +102,12 @@ const getNewPlayerData = async (newPlayer: IPlayerNew): Promise<IPlayerNew> => {
     return newPlayerWithPassHash;
 };
 
-
-interface IPlayer {
-    id: number;
-    username: string;
-    password: string;
-    email: string;
-    teamid: number;
-    timecreated: Date;
-}
-
-interface IPlayerNew {
-    username: string;
-    password: string;
-    email: string;
-    teamid: number;
-}
+const getRandomUsername = (): String => {
+    const base = "Jahne Doe";
+    const randomNumber = Math.floor(Math.random()*1000000000);
+    const randomUsername = `${base}-${randomNumber}`;
+    return randomUsername;
+};
 
 interface IPlayerClass {
     getPlayer(): IPlayer;
