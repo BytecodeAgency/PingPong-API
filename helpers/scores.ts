@@ -1,6 +1,9 @@
 import IGamePlayed from '../typescript/IGamePlayed';
-
-// TODO: Make
+import ILeader from '../typescript/ILeader';
+import IStats from '../typescript/IStats';
+import IPlayerMatrix from '../typescript/IPlayerMatrix';
+import IHeadToHead from '../typescript/IHeadToHead';
+import ITeamScoreData from '../typescript/ITeamScoreData';
 
 // tslint:disable-next-line max-line-length
 export const getListOfActivePlayers = (gamesPlayed: IGamePlayed[]): number[] => {
@@ -108,33 +111,3 @@ export default (gamesPlayed: IGamePlayed[]): ITeamScoreData => {
         teamStats: getTeamStats(gamesPlayed),
     };
 };
-
-interface ILeader {
-    rank: number;
-    id: number;
-    winPercentage: number;
-}
-
-interface IPlayerMatrix {
-    player1: number;
-    player2: number;
-}
-
-interface IHeadToHead {
-    player1: number;
-    player2: number;
-    player1won: number;
-    player2won: number;
-    totalGames: number;
-}
-
-interface IStats {
-    totalGames: number;
-    totalPoints: number;
-}
-
-interface ITeamScoreData {
-    leaderboard: ILeader[];
-    headToHead: IHeadToHead[];
-    teamStats: IStats;
-}
