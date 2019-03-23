@@ -1,4 +1,5 @@
 import Team from '../../models/team';
+import Player from '../../models/player';
 import { useTestDatabase } from '../config';
 
 useTestDatabase();
@@ -12,6 +13,28 @@ const testTeamData = {
 
 const testNewTeamData = {
     name: 'teamname',
+};
+
+const addTestTeamWithMembers = async () => {
+    const newTeamObject = await Team.addNewTeam({ name: 'teammembertestteam' });
+    const newTeam = newTeamObject.getTeam();
+    const newPlayer1 = await Player.addNewPlayer({
+        teamid: newTeam.id,
+        username: 'teamthenewplayer1',
+        password: 'testpass1',
+        email: 'teamthenewplayer1@gmail.com',
+    });
+    const newPlayer2 = await Player.addNewPlayer({
+        teamid: newTeam.id,
+        username: 'teamthenewplayer2',
+        password: 'testpass2',
+        email: 'teamthenewplayer2@gmail.com',
+    });
+    const expectedTeamMembers = [newPlayer1, newPlayer2];
+    return {
+        expectedTeamMembers,
+        team: newTeamObject,
+    };
 };
 
 describe('Team model', () => {
@@ -35,6 +58,12 @@ describe('Team model', () => {
         expect(newTeam.name).toBe(fetchedNewTeam.name);
         expect(newTeam.invitecode).toBe(fetchedNewTeam.invitecode);
         expect(newTeam.timecreated).toEqual(fetchedNewTeam.timecreated);
+    });
+
+    it('should be possible to fetch all team members', async () => {
+        const testData = await addTestTeamWithMembers();
+        const teamMembers = await testData.team.getTeamMembers();
+        expect(teamMembers).toEqual(testData.expectedTeamMembers);
     });
 });
 

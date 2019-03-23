@@ -27,8 +27,12 @@ class Team implements ITeamClass {
     }
 
     public async getTeamMembers(): Promise<Player[]> {
-        // TODO: Make tests
-        // TODO: Make method
+        const teamId = this.id;
+        const teamMembers = await knex
+            .select('*')
+            .from('players')
+            .where({ teamid: teamId });
+        return teamMembers;
     }
 
     public static async addNewTeam(newTeam: ITeamNew): Promise<Team> {
