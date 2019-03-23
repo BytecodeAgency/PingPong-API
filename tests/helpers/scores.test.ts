@@ -92,7 +92,7 @@ describe('getTeamStats', () => {
         const teamStats = getTeamStats(testGames);
         const expectedStats = {
             totalGames: 10,
-            totalPoints: 192,
+            totalPoints: 194,
         };
         expect(teamStats).toEqual(expectedStats);
 
