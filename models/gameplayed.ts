@@ -1,7 +1,8 @@
 import knex from '../helpers/db';
 import IGamePlayed from '../typescript/IGamePlayed';
 import IGamePlayedNew from '../typescript/IGamePlayedNew';
-import { getLeaderboard } from '../helpers/scores'; // TODO: Implement
+import getScores from '../helpers/scores';
+import ITeamScoreData from '../typescript/ITeamScoreData';
 
 class GamePlayed implements IGamePlayedClass {
     private id: number;
@@ -65,9 +66,11 @@ class GamePlayed implements IGamePlayedClass {
         return gamesPlayed;
     }
 
-    public static async getTeamScores(id: number): Promise<ITeamData> {
-        const playedGames = this.getGamesPlayedForTeam(id);
-        return thingj7y;
+    public static async getTeamScores(id: number): Promise<ITeamScoreData> {
+        const playedGamesObjects = await this.getGamesPlayedForTeam(id);
+        const playedGames = playedGamesObjects.map(g => g.getGamePlayed());
+        const teamScores = await getScores(playedGames);
+        return teamScores;
     }
 }
 
