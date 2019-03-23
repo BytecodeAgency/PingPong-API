@@ -32,23 +32,74 @@ export const getLeaderboard = (gamesPlayed: IGamePlayed[]): ILeader[] => {
     return leaderboard;
 };
 
-// export const getHeadToHeadScores = (gamesPlayed: IGamePlayed[]): IHeadToHead[] => {
-//     return [{
-//         rank: 1,
-//         id: 1,
-//         username: 'Luciano',
-//         winPercentage: 65.9,
-//     }];
-// };
+// TODO: Clean this code, with undefined stuff
+export const getPlayerMatrix = (activePlayers: number[]): IPlayerMatrix[] => {
+    const activePlayerMatrix = activePlayers.map((playerLeft, indexLeft) => {
+        const matches = activePlayers.map((playerRight, indexRight) => {
+            if (indexLeft >= indexRight) {
+                return;
+            }
+            const playerMatrixEntry: IPlayerMatrix = {
+                player1: playerLeft,
+                player2: playerRight,
+            };
+            return playerMatrixEntry;
+        });
+        return matches;
+    });
+    const flatPlayerMatrix: IPlayerMatrix[] = activePlayerMatrix
+        .reduce((acc, val) => acc.concat(val), [])
+        .filter(entry => entry)
+        .map(entry => {
+            if (!entry) throw new Error('Undefined');
+            return {
+                player1: entry.player1,
+                player2: entry.player2,
+            };
+        });
+    return flatPlayerMatrix;
+};
 
-// export const getStats = (gamesPlayed: IGamePlayed[]): ILeader[] => {
-//     return [{
-//         rank: 1,
-//         id: 1,
-//         username: 'Luciano',
-//         winPercentage: 65.9,
-//     }];
-// };
+export const getHeadToHead = (gamesPlayed: IGamePlayed[]): IHeadToHead[] => {
+    const activePlayers = getListOfActivePlayers(gamesPlayed);
+    const playerMatrix = getPlayerMatrix(activePlayers);
+    const headToHead = playerMatrix.map(pm => {
+        const headToHeadGames = gamesPlayed
+            .filter(game =>
+                game.player1id === pm.player1 ||
+                game.player1id === pm.player2)
+            .filter(game =>
+                game.player2id === pm.player1 ||
+                game.player2id === pm.player2);
+        const totalGames = headToHeadGames.length;
+        const wonByP1 = headToHeadGames
+            .filter(game => game.winner === pm.player1)
+            .length;
+        const wonByP2 = headToHeadGames
+            .filter(game => game.winner === pm.player2)
+            .length;
+        const headToHeadEntry = {
+            totalGames,
+            player1: pm.player1,
+            player2: pm.player2,
+            player1won: wonByP1,
+            player2won: wonByP2,
+        };
+        return headToHeadEntry;
+    });
+    return headToHead;
+};
+
+export const getTeamStats = (gamesPlayed: IGamePlayed[]): IStats => {
+    const totalGames = gamesPlayed.length;
+    const totalPoints = gamesPlayed
+        .reduce((acc, val) => acc + val.player1score + val.player2score, 0);
+    const stats = {
+        totalGames,
+        totalPoints,
+    };
+    return stats;
+};
 
 // export default (gamesPlayed: IGamePlayed[]): ITeamScoreData => {
 //     const headToHeadScores = getHeadToHeadScores(gamesPlayed);
@@ -57,8 +108,25 @@ export const getLeaderboard = (gamesPlayed: IGamePlayed[]): ILeader[] => {
 interface ILeader {
     rank: number;
     id: number;
-    // username: string;
     winPercentage: number;
+}
+
+interface IPlayerMatrix {
+    player1: number;
+    player2: number;
+}
+
+interface IHeadToHead {
+    player1: number;
+    player2: number;
+    player1won: number;
+    player2won: number;
+    totalGames: number;
+}
+
+interface IStats {
+    totalGames: number;
+    totalPoints: number;
 }
 
 interface ITeamScoreData {
