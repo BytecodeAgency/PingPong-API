@@ -28,6 +28,17 @@ const handleAuth = async (req: Request, res: Response): Promise<void> => {
     res.status(201).send(payload);
 };
 
+const registerUser = async(req: Request, res: Response): Promise<void> => {
+    const hashedPass = await authHelper.generatePasswordHash(req.body.password);
+    const playerData = {
+        username: req.body.username,
+        email: req.body.email,
+        teamid: req.body.teamid,
+        password: hashedPass,
+    };
+    const player = Player.addNewPlayer(playerData);
+}
+
 export default class PlayerController {
     public static auth = async (req: Request, res: Response): Promise<void> => {
         try {
@@ -37,6 +48,7 @@ export default class PlayerController {
         }
     }
     public static register = (req: Request, res: Response): void => {
+        registerUser(req, res);
         res.sendStatus(200);
     }
 }
