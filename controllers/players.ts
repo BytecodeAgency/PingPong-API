@@ -8,19 +8,6 @@ const authUser = async (username: string, pass: string): Promise<boolean> => {
     return isAuth;
 };
 
-// TODO: Move to model
-const generatePlayerJWT = async (username: string): Promise<string> => {
-    const userObj = await Player.getPlayerByUsername(username);
-    const user = userObj.getPlayer();
-    const jwtPayloadData = {
-        username: user.username,
-        teamid: user.teamid,
-    }
-    const jwtPayload = await authHelper.generatePayload(jwtPayloadData);
-    const jwt = authHelper.generateJWT(jwtPayload);
-    return jwt;
-};
-
 const handleAuth = async (req: Request, res: Response): Promise<void> => {
     const reqUser = req.body.username;
     const reqPass = req.body.password;
@@ -31,7 +18,7 @@ const handleAuth = async (req: Request, res: Response): Promise<void> => {
     }
     const userObj = await Player.getPlayerByUsername(reqUser);
     const user = userObj.getPlayer();
-    const jwt = generatePlayerJWT(reqUser);
+    const jwt = userObj.getJWT();
     const payload = {
         jwt,
         userid: user.id,
@@ -44,7 +31,7 @@ const handleAuth = async (req: Request, res: Response): Promise<void> => {
 export default class PlayerController {
     public static auth = async (req: Request, res: Response): Promise<void> => {
         try {
-            handleAuth(req, res);
+            await handleAuth(req, res);
         } catch (err) {
             res.sendStatus(500);
         }

@@ -33,6 +33,16 @@ class Player implements IPlayerClass {
         return player;
     }
 
+    public async getJWT(): Promise<string> {
+        const jwtPayloadData = {
+            username: this.username,
+            teamid: this.teamid,
+        };
+        const jwtPayload = await authHelper.generatePayload(jwtPayloadData);
+        const jwt = await authHelper.generateJWT(jwtPayload);
+        return jwt;
+    }
+
     public static async addNewPlayer(newPlayer: IPlayerNew): Promise<Player> {
         const newPlayerData = await getNewPlayerData(newPlayer);
         const returning = [
@@ -67,10 +77,14 @@ class Player implements IPlayerClass {
 
     // tslint:disable-next-line max-line-length
     public static async authenticatePlayerByUsername(username: string, password: string): Promise<boolean> {
-        const player = await Player.getPlayerByUsername(username);
-        const hashed = player.password;
-        const isAuth = await authHelper.checkPasswordHash(password, hashed);
-        return isAuth;
+        try {
+            const player = await Player.getPlayerByUsername(username);
+            const hashed = player.password;
+            const isAuth = await authHelper.checkPasswordHash(password, hashed);
+            return isAuth;
+        } catch (err) {
+            return false; // No player found
+        }
     }
 
     public static async deletePlayerById(userId: number): Promise<number> {
