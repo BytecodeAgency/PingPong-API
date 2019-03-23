@@ -32,7 +32,7 @@ export const getLeaderboard = (gamesPlayed: IGamePlayed[]): ILeader[] => {
     return leaderboard;
 };
 
-// TODO: Clean this code, with undefined stuff
+// TODO: Clean this code, fix undefined stuff
 export const getPlayerMatrix = (activePlayers: number[]): IPlayerMatrix[] => {
     const activePlayerMatrix = activePlayers.map((playerLeft, indexLeft) => {
         const matches = activePlayers.map((playerRight, indexRight) => {
@@ -101,9 +101,13 @@ export const getTeamStats = (gamesPlayed: IGamePlayed[]): IStats => {
     return stats;
 };
 
-// export default (gamesPlayed: IGamePlayed[]): ITeamScoreData => {
-//     const headToHeadScores = getHeadToHeadScores(gamesPlayed);
-// };
+export default (gamesPlayed: IGamePlayed[]): ITeamScoreData => {
+    return {
+        leaderboard: getLeaderboard(gamesPlayed),
+        headToHead: getHeadToHead(gamesPlayed),
+        teamStats: getTeamStats(gamesPlayed),
+    };
+};
 
 interface ILeader {
     rank: number;
@@ -130,5 +134,7 @@ interface IStats {
 }
 
 interface ITeamScoreData {
-    // TODO: Create
+    leaderboard: ILeader[];
+    headToHead: IHeadToHead[];
+    teamStats: IStats;
 }
