@@ -44,10 +44,10 @@ class GamePlayed implements IGamePlayedClass {
 
     // tslint:disable-next-line max-line-length
     public static async addNewGamePlayed(newGamePlayed: IGamePlayedNew): Promise<GamePlayed> {
-        const addedGamePlayed: IGamePlayed = await knex('gamesplayed')
-            .insert(newGamePlayed)
-            .returning('*')
-            .first();
+        const addedGamePlayedArr = await knex('gamesplayed')
+        .insert(newGamePlayed)
+        .returning('*');
+        const addedGamePlayed: IGamePlayed = addedGamePlayedArr[0];
         const gamePlayed = new GamePlayed(addedGamePlayed);
         return gamePlayed;
     }

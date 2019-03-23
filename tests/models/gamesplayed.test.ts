@@ -8,10 +8,8 @@ useTestDatabase();
 const addNewTeam = async (): Promise<number> => {
     const name = `testteam-${Math.floor(Math.random()*100000000)}`;
     const newTeamData = { name };
-    const newTeamId = await knex('teams')
-        .returning(['id'])
-        .insert(newTeamData)
-        .first();
+    const newTeam = await knex('teams').returning(['id']).insert(newTeamData);
+    const newTeamId = newTeam[0].id;
     return newTeamId;
 };
 

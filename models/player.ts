@@ -38,20 +38,17 @@ class Player implements IPlayerClass {
         const returning = [
             'id', 'username', 'password', 'email', 'teamid', 'timecreated',
         ];
-        const addedPlayer = await knex('players')
+        const addedPlayerArr = await knex('players')
             .insert(newPlayerData)
-            .returning(returning)
-            .first();
+            .returning(returning);
+        const addedPlayer: IPlayer = addedPlayerArr[0];
         const player = new Player(addedPlayer);
         return player;
     }
 
     public static async getPlayerById(id: number): Promise<Player> {
-        const playerData: IPlayer = await knex
-            .select('*')
-            .from('players')
-            .where({ id })
-            .first();
+        const playerArr = await knex.select('*').from('players').where({ id });
+        const playerData: IPlayer = playerArr[0];
         const player: Player = new Player(playerData);
         return player;
     }
@@ -85,11 +82,11 @@ class Player implements IPlayerClass {
             email: `${newUsername}@pingpong.bytecode.nl`
         };
         const updatedUser = { ...playerCurrent, ...newPlayerData };
-        const deletedPlayer = await knex('players')
+        const deletedPlayerArr = await knex('players')
             .returning([ 'id' ])
             .where({ id: userId })
-            .update(updatedUser)
-            .first();
+            .update(updatedUser);
+        const deletedPlayer = deletedPlayerArr[0];
         const deletedPlayerId = deletedPlayer.id;
         return deletedPlayerId;
     }
