@@ -18,9 +18,9 @@ const handleAuth = async (req: Request, res: Response): Promise<void> => {
     }
     const userObj = await Player.getPlayerByUsername(reqUser);
     const user = userObj.getPlayer();
-    const jwt = userObj.getJWT();
+    const jwt = await userObj.getJWT();
     const payload = {
-        jwt: jwt,
+        jwt,
         userid: user.id,
         username: user.username,
         teamid: user.teamid,
