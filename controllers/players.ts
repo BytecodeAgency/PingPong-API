@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import Player from '../models/player';
+import Team from '../models/team';
 import authHelper from '../helpers/auth';
 
 // TODO: Move to helper
@@ -28,7 +29,25 @@ const handleAuth = async (req: Request, res: Response): Promise<void> => {
     res.status(201).send(payload);
 };
 
+const checkTeamExists = async (teamId: number): Promise<boolean> => {
+    const team = await Team.getTeamById(teamId);
+    if (team) return true;
+    return false;
+};
+
 const registerUser = async(req: Request, res: Response): Promise<void> => {
+    // TODO: Improve and clean up validation
+    if (!req.body.username || !req.body.email || !req.body.teamid ||
+        !req.body.password) {
+        res.sendStatus(400);
+        return;
+    }
+    const teamExists = await checkTeamExists(req.body.teamid);
+    if (!teamExists) {
+        res.sendStatus(400);
+        return;
+    }
+
     const hashedPass = await authHelper.generatePasswordHash(req.body.password);
     const playerData = {
         username: req.body.username,
@@ -40,13 +59,13 @@ const registerUser = async(req: Request, res: Response): Promise<void> => {
     const user = player.getPlayer();
     const jwt = player.getJWT();
     const payload = {
-        jwt: jwt,
+        jwt,
         userid: user.id,
         username: user.username,
         teamid: user.teamid,
     };
     res.status(201).send(payload);
-}
+};
 
 export default class PlayerController {
     public static auth = async (req: Request, res: Response): Promise<void> => {
@@ -57,7 +76,10 @@ export default class PlayerController {
         }
     }
     public static register = (req: Request, res: Response): void => {
-        registerUser(req, res);
-        res.sendStatus(200);
+        try {
+            registerUser(req, res);
+        } catch {
+            res.sendStatus(500);
+        }
     }
 }

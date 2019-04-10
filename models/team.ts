@@ -47,8 +47,9 @@ class Team implements ITeamClass {
         return team;
     }
 
-    public static async getTeamById(id: number): Promise<Team> {
+    public static async getTeamById(id: number): Promise<Team|null> {
         const teamArr = await knex.select('*').from('teams').where({ id });
+        if(teamArr.length === 0) return null;
         const teamData: ITeam = teamArr[0];
         const team: Team = new Team(teamData);
         return team;

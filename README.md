@@ -59,6 +59,26 @@ For any pull-requests to be accepted, the following commands should pass:
 
 For checking the code coverage, run `yarn run coverage`.
 
+## Routes
+
+All routes are based on `/api/v1`
+
+#### POST /player/register
+
+```
+username: string
+email: string
+teamid: number
+password: string
+```
+
+#### POST /player/auth
+
+```
+username: string
+password: string
+```
+
 ## License and maintainers
 
 This project is AGPL-3.0 licensed.

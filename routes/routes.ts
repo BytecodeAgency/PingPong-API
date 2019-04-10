@@ -9,6 +9,6 @@ router.post('/player/authenticate', Player.auth);
 router.post('/player/register', Player.register);
 router.post('/team/create', Team.create);
 router.post('/team/get-all-data', Team.getAll);
-router.post('/game/create', Game.createGame)
+router.post('/game/create', Game.createGame);
 
 export default router;
