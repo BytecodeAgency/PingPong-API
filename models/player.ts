@@ -63,12 +63,14 @@ class Player implements IPlayerClass {
         return player;
     }
 
-    public static async getPlayerByUsername(username: string): Promise<Player> {
+    // tslint:disable-next-line max-line-length
+    public static async getPlayerByUsername(username: string): Promise<Player|null> {
         const playerArr = await knex.select('*')
             .from('players')
             .where({ username });
         if (playerArr.length === 0) {
-            throw new Error('No player found');
+            return null;
+            // throw new Error('No player found');
         }
         const playerData: IPlayer = playerArr[0];
         const player: Player = new Player(playerData);
@@ -79,7 +81,9 @@ class Player implements IPlayerClass {
     public static async authenticatePlayerByUsername(username: string, password: string): Promise<boolean> {
         try {
             const player = await Player.getPlayerByUsername(username);
-            const hashed = player.password;
+            const fetchedPlayer = await Player.getPlayerByUsername(username);
+            if (!fetchedPlayer) return false;
+            const hashed = fetchedPlayer.password;
             const isAuth = await authHelper.checkPasswordHash(password, hashed);
             return isAuth;
         } catch (err) {

@@ -18,6 +18,10 @@ const handleAuth = async (req: Request, res: Response): Promise<void> => {
         return;
     }
     const userObj = await Player.getPlayerByUsername(reqUser);
+    if (!userObj) {
+        res.sendStatus(400);
+        return;
+    }
     const user = userObj.getPlayer();
     const jwt = await userObj.getJWT();
     const payload = {
@@ -42,18 +46,22 @@ const registerUser = async(req: Request, res: Response): Promise<void> => {
         res.sendStatus(400);
         return;
     }
+    const playerExists = await Player.getPlayerByUsername(req.body.username);
+    if (playerExists) {
+        res.sendStatus(400);
+        return;
+    }
     const teamExists = await checkTeamExists(req.body.teamid);
     if (!teamExists) {
         res.sendStatus(400);
         return;
     }
 
-    const hashedPass = await authHelper.generatePasswordHash(req.body.password);
     const playerData = {
         username: req.body.username,
         email: req.body.email,
         teamid: req.body.teamid,
-        password: hashedPass,
+        password: req.body.password,
     };
     const player = await Player.addNewPlayer(playerData);
     const user = player.getPlayer();
