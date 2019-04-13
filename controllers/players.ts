@@ -65,7 +65,7 @@ const registerUser = async(req: Request, res: Response): Promise<void> => {
     };
     const player = await Player.addNewPlayer(playerData);
     const user = player.getPlayer();
-    const jwt = player.getJWT();
+    const jwt = await player.getJWT();
     const payload = {
         jwt,
         userid: user.id,
