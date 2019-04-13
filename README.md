@@ -63,6 +63,18 @@ For checking the code coverage, run `yarn run coverage`.
 
 All routes are based on `/api/v1`
 
+#### GET /status
+
+Returns http code 200
+
+#### POST /team/create
+
+```
+name: string
+```
+
+#### POST /team/get-all-data
+
 #### POST /player/register
 
 ```
@@ -78,6 +90,8 @@ password: string
 username: string
 password: string
 ```
+
+#### POST /game/create
 
 ## License and maintainers
 

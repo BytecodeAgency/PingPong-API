@@ -54,6 +54,14 @@ class Team implements ITeamClass {
         const team: Team = new Team(teamData);
         return team;
     }
+
+    public static async getTeamByName(name: string): Promise<Team|null> {
+        const teamArr = await knex.select('*').from('teams').where({ name });
+        if(teamArr.length === 0) return null;
+        const teamData: ITeam = teamArr[0];
+        const team: Team = new Team(teamData);
+        return team;
+    }
 }
 
 interface ITeamClass {
