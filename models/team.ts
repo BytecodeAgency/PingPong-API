@@ -29,7 +29,7 @@ class Team implements ITeamClass {
     public async getTeamMembers(): Promise<Player[]> {
         const teamId = this.id;
         const teamMembers = await knex
-            .select('*')
+            .select(['id', 'username', 'teamid'])
             .from('players')
             .where({ teamid: teamId });
         return teamMembers;

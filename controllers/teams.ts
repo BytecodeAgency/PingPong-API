@@ -37,10 +37,36 @@ const getTeamData = async(req: Request, res: Response): Promise<void> => {
     res.send(teamData);
 };
 
+const getTeamMembers = async (req: Request, res: Response): Promise<void> => {
+    if (!req.headers.authorization || typeof req.headers.authorization !== 'string') {
+        res.sendStatus(400);
+        return;
+    }
+    if (!req.body.teamid) {
+        res.sendStatus(400);
+        return;
+    }
+    const jwt = req.headers.authorization.split(' ')[1];
+    const teamid = req.body.teamid;
+    const authenticated = await Player.checkTeamJWT(jwt, teamid);
+    if (!authenticated) {
+        res.sendStatus(400);
+        return;
+    }
+
+    const team = await Team.getTeamById(teamid);
+    if (!team) { res.sendStatus(500); return; }
+    const members = await team.getTeamMembers();
+    res.send(members);
+}
+
 // TODO: Research middleware for auth
 export default class TeamController {
     public static create = (req: Request, res: Response): void => {
         registerTeam(req, res);
+    }
+    public static getMembers = (req: Request, res: Response): void => {
+        getTeamMembers(req, res);
     }
     public static getAll = (req: Request, res: Response): void => {
         getTeamData(req, res);

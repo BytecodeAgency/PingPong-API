@@ -75,12 +75,20 @@ Returns http code 200
 name: string
 ```
 
+#### POST /team/get-members
+
+Requires auth, add an `Authentication` header with value `Bearer [token]`.
+
+```
+teamid: number
+```
+
 #### POST /team/get-all-data
 
 Requires auth, add an `Authentication` header with value `Bearer [token]`.
 
 ```
-id: number
+teamid: number
 ```
 
 #### POST /player/register
