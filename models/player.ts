@@ -38,9 +38,36 @@ class Player implements IPlayerClass {
             username: this.username,
             teamid: this.teamid,
         };
-        const jwtPayload = await authHelper.generatePayload(jwtPayloadData);
-        const jwt = await authHelper.generateJWT(jwtPayload);
+        const jwt = await authHelper.generateJWT(jwtPayloadData);
         return jwt;
+    }
+
+    public static async checkJWT(jwt: string): Promise<boolean> {
+        try {
+            const jwtData = await authHelper.decodeJWT(jwt);
+            const nowDate = new Date().setDate(new Date().getDate());
+            const expired = jwtData.exp < nowDate;
+            if (expired) {
+                return false;
+            }
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    public static async checkTeamJWT(jwt: string, teamId: number): Promise<boolean> {
+        const validJWT = await Player.checkJWT(jwt);
+        if (!validJWT) {
+            return false;
+        }
+        const jwtData = await authHelper.decodeJWT(jwt);
+        const teamJWT = jwtData.data.teamid;
+        if (teamId !== teamJWT) {
+            return false;
+        }
+        return true;
+
     }
 
     public static async addNewPlayer(newPlayer: IPlayerNew): Promise<Player> {

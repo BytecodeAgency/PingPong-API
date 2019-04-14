@@ -75,6 +75,12 @@ name: string
 
 #### POST /team/get-all-data
 
+Requires auth, add an `Authentication` header with value `Bearer [token]`.
+
+```
+id: number
+```
+
 #### POST /player/register
 
 ```

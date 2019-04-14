@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Team from '../models/team';
 import GamePlayed from '../models/gameplayed';
+import Player from '../models/player';
 
 const registerTeam = async(req: Request, res: Response): Promise<void> => {
     const teamData = {
@@ -17,7 +18,22 @@ const registerTeam = async(req: Request, res: Response): Promise<void> => {
 };
 
 const getTeamData = async(req: Request, res: Response): Promise<void> => {
-    const teamData = await GamePlayed.getTeamScores(req.body.id);
+    if (!req.headers.authorization || typeof req.headers.authorization !== 'string') {
+        res.sendStatus(400);
+        return;
+    }
+    if (!req.body.teamid) {
+        res.sendStatus(400);
+        return;
+    }
+    const jwt = req.headers.authorization.split(' ')[1];
+    const teamid = req.body.teamid;
+    const authenticated = await Player.checkTeamJWT(jwt, teamid);
+    if (!authenticated) {
+        res.sendStatus(400);
+        return;
+    }
+    const teamData = await GamePlayed.getTeamScores(teamid);
     res.send(teamData);
 };
 
