@@ -61,6 +61,8 @@ For checking the code coverage, run `yarn run coverage`.
 
 ## Routes
 
+TODO: Add Swaggerhub
+
 All routes are based on `/api/v1`
 
 #### GET /status
@@ -92,12 +94,26 @@ password: string
 
 #### POST /player/auth
 
+Return includes a JWT
+
 ```
 username: string
 password: string
 ```
 
 #### POST /game/create
+
+Requires auth, add an `Authentication` header with value `Bearer [token]`.
+
+```
+teamid: number
+player1id: number
+player1score: number
+player2id: number
+player2score: number
+winner: number
+addedby: number
+```
 
 ## License and maintainers
 
