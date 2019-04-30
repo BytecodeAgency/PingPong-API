@@ -35,8 +35,7 @@ const handleAuth = async (req: Request, res: Response): Promise<void> => {
 
 const checkTeamExists = async (teamId: number): Promise<boolean> => {
     const team = await Team.getTeamById(teamId);
-    if (team) return true;
-    return false;
+    return !!team;
 };
 
 const registerUser = async(req: Request, res: Response): Promise<void> => {

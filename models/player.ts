@@ -63,11 +63,7 @@ class Player implements IPlayerClass {
         }
         const jwtData = await authHelper.decodeJWT(jwt);
         const teamJWT = jwtData.data.teamid;
-        if (teamId !== teamJWT) {
-            return false;
-        }
-        return true;
-
+        return teamId === teamJWT;
     }
 
     public static async addNewPlayer(newPlayer: IPlayerNew): Promise<Player> {
@@ -97,7 +93,6 @@ class Player implements IPlayerClass {
             .where({ username });
         if (playerArr.length === 0) {
             return null;
-            // throw new Error('No player found');
         }
         const playerData: IPlayer = playerArr[0];
         const player: Player = new Player(playerData);
