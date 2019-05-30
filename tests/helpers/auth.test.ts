@@ -11,7 +11,8 @@ const baseTimeDate = new Date();
 const baseTime = baseTimeDate.setDate(baseTimeDate.getDate());
 
 const payloadData = {
-    user: 'Test',
+    username: 'Test',
+    teamid: 420,
 };
 
 describe('Authentication helper', () => {

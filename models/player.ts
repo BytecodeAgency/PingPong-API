@@ -33,6 +33,39 @@ class Player implements IPlayerClass {
         return player;
     }
 
+    public async getJWT(): Promise<string> {
+        const jwtPayloadData = {
+            username: this.username,
+            teamid: this.teamid,
+        };
+        const jwt = await authHelper.generateJWT(jwtPayloadData);
+        return jwt;
+    }
+
+    public static async checkJWT(jwt: string): Promise<boolean> {
+        try {
+            const jwtData = await authHelper.decodeJWT(jwt);
+            const nowDate = new Date().setDate(new Date().getDate());
+            const expired = jwtData.exp < nowDate;
+            if (expired) {
+                return false;
+            }
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    public static async checkTeamJWT(jwt: string, teamId: number): Promise<boolean> {
+        const validJWT = await Player.checkJWT(jwt);
+        if (!validJWT) {
+            return false;
+        }
+        const jwtData = await authHelper.decodeJWT(jwt);
+        const teamJWT = jwtData.data.teamid;
+        return teamId === teamJWT;
+    }
+
     public static async addNewPlayer(newPlayer: IPlayerNew): Promise<Player> {
         const newPlayerData = await getNewPlayerData(newPlayer);
         const returning = [
@@ -53,12 +86,13 @@ class Player implements IPlayerClass {
         return player;
     }
 
-    public static async getPlayerByUsername(username: string): Promise<Player> {
+    // tslint:disable-next-line max-line-length
+    public static async getPlayerByUsername(username: string): Promise<Player|null> {
         const playerArr = await knex.select('*')
             .from('players')
             .where({ username });
         if (playerArr.length === 0) {
-            throw new Error('No player found');
+            return null;
         }
         const playerData: IPlayer = playerArr[0];
         const player: Player = new Player(playerData);
@@ -67,10 +101,16 @@ class Player implements IPlayerClass {
 
     // tslint:disable-next-line max-line-length
     public static async authenticatePlayerByUsername(username: string, password: string): Promise<boolean> {
-        const player = await Player.getPlayerByUsername(username);
-        const hashed = player.password;
-        const isAuth = await authHelper.checkPasswordHash(password, hashed);
-        return isAuth;
+        try {
+            const player = await Player.getPlayerByUsername(username);
+            const fetchedPlayer = await Player.getPlayerByUsername(username);
+            if (!fetchedPlayer) return false;
+            const hashed = fetchedPlayer.password;
+            const isAuth = await authHelper.checkPasswordHash(password, hashed);
+            return isAuth;
+        } catch (err) {
+            return false; // No player found
+        }
     }
 
     public static async deletePlayerById(userId: number): Promise<number> {

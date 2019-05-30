@@ -38,7 +38,7 @@ const calculateDates = (issuedAtParam?: number): IDates => {
     return dates;
 };
 
-const generatePayload = (data: {}, issuedAt?: number): IPayload => {
+const generatePayload = (data: {username: string, teamid: number}, issuedAt?: number): IPayload => {
     const dates = calculateDates(issuedAt);
     const payload: IPayload= {
         ...dates,
@@ -47,7 +47,7 @@ const generatePayload = (data: {}, issuedAt?: number): IPayload => {
     return payload;
 };
 
-const generateJWT = (data: {}, issuedAt?: number): string => {
+const generateJWT = (data: {username: string, teamid: number}, issuedAt?: number): string => {
     const payload = generatePayload(data, issuedAt);
     const token: string = jwt.encode(payload, jwtSecret);
     return token;
@@ -93,7 +93,10 @@ interface IDates {
 interface IPayload {
     iat: number;
     exp: number;
-    data: {};
+    data: {
+        username: string;
+        teamid: number;
+    };
 }
 
 interface IPayloadDecoded extends IPayload {

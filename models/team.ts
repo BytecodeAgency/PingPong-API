@@ -29,7 +29,7 @@ class Team implements ITeamClass {
     public async getTeamMembers(): Promise<Player[]> {
         const teamId = this.id;
         const teamMembers = await knex
-            .select('*')
+            .select(['id', 'username', 'teamid'])
             .from('players')
             .where({ teamid: teamId });
         return teamMembers;
@@ -47,8 +47,17 @@ class Team implements ITeamClass {
         return team;
     }
 
-    public static async getTeamById(id: number): Promise<Team> {
+    public static async getTeamById(id: number): Promise<Team|null> {
         const teamArr = await knex.select('*').from('teams').where({ id });
+        if(teamArr.length === 0) return null;
+        const teamData: ITeam = teamArr[0];
+        const team: Team = new Team(teamData);
+        return team;
+    }
+
+    public static async getTeamByName(name: string): Promise<Team|null> {
+        const teamArr = await knex.select('*').from('teams').where({ name });
+        if(teamArr.length === 0) return null;
         const teamData: ITeam = teamArr[0];
         const team: Team = new Team(teamData);
         return team;

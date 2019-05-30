@@ -59,6 +59,70 @@ For any pull-requests to be accepted, the following commands should pass:
 
 For checking the code coverage, run `yarn run coverage`.
 
+## Routes
+
+TODO: Add Swaggerhub
+
+All routes are based on `/api/v1`
+
+#### GET /status
+
+Returns http code 200
+
+#### POST /team/create
+
+```
+name: string
+```
+
+#### POST /team/get-members
+
+Requires auth, add an `Authentication` header with value `Bearer [token]`.
+
+```
+teamid: number
+```
+
+#### POST /team/get-all-data
+
+Requires auth, add an `Authentication` header with value `Bearer [token]`.
+
+```
+teamid: number
+```
+
+#### POST /player/register
+
+```
+username: string
+email: string
+teamid: number
+password: string
+```
+
+#### POST /player/auth
+
+Return includes a JWT
+
+```
+username: string
+password: string
+```
+
+#### POST /game/create
+
+Requires auth, add an `Authentication` header with value `Bearer [token]`.
+
+```
+teamid: number
+player1id: number
+player1score: number
+player2id: number
+player2score: number
+winner: number
+addedby: number
+```
+
 ## License and maintainers
 
 This project is AGPL-3.0 licensed.

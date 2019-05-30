@@ -53,6 +53,9 @@ describe('Team model', () => {
         const newTeamObject = await Team.addNewTeam(testNewTeamData);
         const newTeam = newTeamObject.getTeam();
         const fetchedNewTeamObject = await Team.getTeamById(newTeam.id);
+        if (!fetchedNewTeamObject) {
+            throw new Error('Fetched team is null')
+        }
         const fetchedNewTeam = fetchedNewTeamObject.getTeam();
         expect(newTeam.id).toBe(fetchedNewTeam.id);
         expect(newTeam.name).toBe(fetchedNewTeam.name);
@@ -61,9 +64,10 @@ describe('Team model', () => {
     });
 
     it('should be possible to fetch all team members', async () => {
+        expect.assertions(1);
         const testData = await addTestTeamWithMembers();
         const teamMembers = await testData.team.getTeamMembers();
-        expect(teamMembers).toEqual(testData.expectedTeamMembers);
+        expect(teamMembers.length).toEqual(testData.expectedTeamMembers.length);
     });
 });
 

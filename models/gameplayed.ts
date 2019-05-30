@@ -57,7 +57,8 @@ class GamePlayed implements IGamePlayedClass {
     public static async getGamesPlayedForTeam(id: number): Promise<GamePlayed[]> {
         const gamePlayedArr = await knex
             .select('*')
-            .from('gamesplayed').where({ teamid: id });
+            .from('gamesplayed')
+            .where({ teamid: id });
         if (!gamePlayedArr) {
             throw new Error('No games found');
         }

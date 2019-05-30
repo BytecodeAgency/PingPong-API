@@ -59,6 +59,7 @@ describe('Player model', () => {
         const newPlayer = newPlayerObject.getPlayer();
         const fetchedNewPlayerObject =
             await Player.getPlayerByUsername(newPlayer.username);
+        if (!fetchedNewPlayerObject) throw new Error('No player');
         const fetchedNewPlayer = fetchedNewPlayerObject.getPlayer();
         expect(newPlayer.id).toBe(fetchedNewPlayer.id);
         expect(newPlayer.username).toBe(fetchedNewPlayer.username);
