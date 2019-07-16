@@ -40,7 +40,7 @@
     "response-time": "^2.3.2",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.3333",
-    "yarn": "^1.13.0"
+    "yarn": "^1.17.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
